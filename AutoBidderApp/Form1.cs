@@ -16,10 +16,10 @@ namespace AutoBidderApp
         {
             InitializeComponent();
 
-            if (this.Load() = )
-            {
+            //if (this.Load() = )
+            //{
 
-            }
+            //}
             comboBox1.Items.Add(new Item("Prem Bid", 1));
             comboBox1.Items.Add(new Item("Fitness Bid", 2));
             comboBox1.Items.Add(new Item("Fitness Buyout", 3));
