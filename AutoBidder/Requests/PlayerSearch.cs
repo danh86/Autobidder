@@ -27,7 +27,7 @@ namespace AutoBidder.Requests
 
         public string GetExampleResponse()
         {
-            return System.IO.File.ReadAllText("C:\\dev\\AutoBidder\\AutoBidder\\ExampleResponses\\PlayerResp.txt");
+            return System.IO.File.ReadAllText("C:\\Users\\robertp\\Documents\\GitHub\\Autobidder\\AutoBidder\\ExampleResponses\\PlayerResp.txt");
         }
     }
 }

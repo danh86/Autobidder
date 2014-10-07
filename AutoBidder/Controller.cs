@@ -12,7 +12,7 @@ namespace AutoBidder
         {
             AutoBidder.Requests.PlayerSearch ps = new AutoBidder.Requests.PlayerSearch();
             string s = ps.GetExampleResponse();
-            var v = JsonConvert.DeserializeObject<AutoBidder.Entities.BaseRequest>(s);
+            var v = JsonConvert.DeserializeObject<AutoBidder.Entities.RootObject>(s);
 
             //System.Net.HttpWebResponse wr1 = ps.MakeRequest();
             //string s1 = AutoBidder.Helpers.WebResponseHelper.ReadResponse(wr1);

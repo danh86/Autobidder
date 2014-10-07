@@ -45,7 +45,7 @@ namespace AutoBidder.Requests
         public string HttpMethodOverride = "GET";
 
         [HttpHeader("Referer")]
-        public string Referer = "http://www.easports.com/iframe/fut/bundles/futweb/web/flash/FifaUltimateTeam.swf";
+        public string Referer = "https://www.easports.com/iframe/fut15/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=144469";
 
         //[HttpHeader("Accept-Encoding")]
         //public string AcceptEncoding = "gzip,deflate,sdch";

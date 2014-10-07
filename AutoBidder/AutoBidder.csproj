@@ -49,6 +49,7 @@
     <Compile Include="Entities\BaseRequest.cs" />
     <Compile Include="Entities\FutItem.cs" />
     <Compile Include="Entities\FutPlayer.cs" />
+	<Compile Include="Entities\Fifa15Resp.cs" />
     <Compile Include="Helpers\Sleeper.cs" />
     <Compile Include="Helpers\WebRequestHelper.cs" />
     <Compile Include="Helpers\WebResponseHelper.cs" />
