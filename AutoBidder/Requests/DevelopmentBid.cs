@@ -8,7 +8,7 @@ namespace AutoBidder.Requests
 {
     class DevelopmentBid : RequestBase
     {
-        private const string REQ_URL = "https://utas.fut.ea.com/ut/game/fifa14/trade/[--ItemId--]/bid ";
+        private const string REQ_URL = "https://utas.fut.ea.com/ut/game/fifa15/trade/[--ItemId--]/bid ";
 		
 		//session id
         [HttpHeader("X-UT-SID")]
