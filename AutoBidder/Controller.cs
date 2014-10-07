@@ -38,6 +38,30 @@ namespace AutoBidder
 
 			Console.WriteLine("test complete!");
 		}
+		
+		public void BidLowGolds() {
+			Console.WriteLine("starting test...");
+			AutoBidder.Requests.PlayerSearch ps = new AutoBidder.Requests.PlayerSearch();
+            ps.startNo = 32;
+			ps.MaxPrice = 250;
+
+			//below should be classed up
+			Console.WriteLine("sending request...");
+			System.Net.HttpWebResponse wr1 = ps.MakeRequest();
+			String s1 = Helpers.WebResponseHelper.ReadResponse(wr1);
+			Console.WriteLine("response = " + s1);
+			Console.WriteLine("parsing response...");
+			AutoBidder.Entities.RootObject v1 = JsonConvert.DeserializeObject<AutoBidder.Entities.RootObject>(s1);
+			
+			foreach (Entities.AuctionInfo ai in v1.auctionInfo)
+            {
+				if (int.Parse(fi.currentBid) < 300 && int.Parse(fi.itemData.rating) > 77 && int.Parse(fi.startingBid) <=300)
+				{
+					Requests.PlayerBid pb = new Requests.PlayerBid();
+					pb.BidAmount = 300;
+				}
+			}
+		}
 
         public void PremBid(string outputStr)
         {

@@ -19,6 +19,11 @@ namespace AutoBidder.Requests
             set { RequestUrl = RequestUrl.Replace("[--startNo--]", value.ToString()); }
         }
 
+		public int MaxPrice
+		{
+			set	{ RequestUrl += "&macr=" + value.ToString();}
+		}
+
         public PlayerSearch()
         {
             RequestUrl = REQ_URL;
