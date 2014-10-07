@@ -10,7 +10,7 @@ namespace AutoBidderConsole
         static void Main(string[] args)
         {
             AutoBidder.Controller c = new AutoBidder.Controller();
-            c.RunTest();
+            c.RunLiveTest();
             //c.PremBid("");
             //c.FitnessBid();
             //c.FitnessBuyout();

@@ -22,6 +22,23 @@ namespace AutoBidder
             //string s2 = AutoBidder.Helpers.WebResponseHelper.ReadResponse(wr2);
         }
 
+		public void RunLiveTest()
+		{
+			Console.WriteLine("starting test...");
+			AutoBidder.Requests.PlayerSearch ps = new AutoBidder.Requests.PlayerSearch();
+            ps.startNo = 32;
+
+			//below should be classed up
+			Console.WriteLine("sending request...");
+			System.Net.HttpWebResponse wr1 = ps.MakeRequest();
+			String s1 = Helpers.WebResponseHelper.ReadResponse(wr1);
+			Console.WriteLine("response = " + s1);
+			Console.WriteLine("parsing response...");
+			AutoBidder.Entities.RootObject v1 = JsonConvert.DeserializeObject<AutoBidder.Entities.RootObject>(s1);
+
+			Console.WriteLine("test complete!");
+		}
+
         public void PremBid(string outputStr)
         {
             for (int i = 0; i < 500; i++)
