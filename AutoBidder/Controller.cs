@@ -38,30 +38,43 @@ namespace AutoBidder
 
 			Console.WriteLine("test complete!");
 		}
-		
-		public void BidLowGolds() {
-			Console.WriteLine("starting test...");
-			AutoBidder.Requests.PlayerSearch ps = new AutoBidder.Requests.PlayerSearch();
-            ps.startNo = 32;
-			ps.MaxPrice = 250;
 
-			//below should be classed up
-			Console.WriteLine("sending request...");
-			System.Net.HttpWebResponse wr1 = ps.MakeRequest();
-			String s1 = Helpers.WebResponseHelper.ReadResponse(wr1);
-			Console.WriteLine("response = " + s1);
-			Console.WriteLine("parsing response...");
-			AutoBidder.Entities.RootObject v1 = JsonConvert.DeserializeObject<AutoBidder.Entities.RootObject>(s1);
-			
-			foreach (Entities.AuctionInfo ai in v1.auctionInfo)
+        public void BidLowGolds()
+        {
+            Console.WriteLine("starting test...");
+            for (int i = 0; i < 500; i++)
             {
-				if (int.Parse(fi.currentBid) < 300 && int.Parse(fi.itemData.rating) > 77 && int.Parse(fi.startingBid) <=300)
-				{
-					Requests.PlayerBid pb = new Requests.PlayerBid();
-					pb.BidAmount = 300;
-				}
-			}
-		}
+                AutoBidder.Requests.PlayerSearch ps = new AutoBidder.Requests.PlayerSearch();
+                ps.startNo = (i * 16) + (16 * 70);
+                ps.MaxPrice = 250;
+
+                //below should be classed up
+                Console.WriteLine("sending request...");
+                System.Net.HttpWebResponse wr1 = ps.MakeRequest();
+                String s1 = Helpers.WebResponseHelper.ReadResponse(wr1);
+                Console.WriteLine("response = " + s1);
+                Console.WriteLine("parsing response...");
+                AutoBidder.Entities.RootObject v1 = JsonConvert.DeserializeObject<AutoBidder.Entities.RootObject>(s1);
+
+                foreach (Entities.AuctionInfo ai in v1.auctionInfo)
+                {
+                    if (ai.currentBid < 300 && ai.itemData.rating > 77 && ai.startingBid <= 300 && ai.itemData.rareflag == 0)
+                    {
+                        Requests.PlayerBid pb = new Requests.PlayerBid();
+                        pb.BidAmount = 300;
+                        pb.PlayerId = ai.tradeId.ToString();
+
+                        //below should be classed
+                        System.Net.HttpWebResponse wr2 = pb.MakeRequest();
+                        String s2 = Helpers.WebResponseHelper.ReadResponse(wr2);
+
+                        Console.WriteLine("result of bid = " + s2);
+                        Helpers.Sleeper.Sleep(2000, 8000);
+                    }
+                }
+				Helpers.Sleeper.Sleep(2000, 8000);
+            }
+        }
 
         public void PremBid(string outputStr)
         {
