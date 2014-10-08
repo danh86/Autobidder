@@ -49,7 +49,7 @@ namespace AutoBidder
                 System.Net.HttpWebResponse wr1 = ps.MakeRequest();
                 String s1 = Helpers.WebResponseHelper.ReadResponse(wr1);
                 AutoBidder.Entities.BaseRequest v1 = JsonConvert.DeserializeObject<AutoBidder.Entities.BaseRequest>(s1);
-                Helpers.Sleeper.Sleep(5000, 10000);
+                Helpers.Sleeper.Sleep(2000, 3000);
                 bool haveABid = false;
                 bool haveBuyout = false;
 
@@ -57,7 +57,7 @@ namespace AutoBidder
                 {
                     haveABid = false;
                     haveBuyout = false;
-                    if (int.Parse(fi.currentBid) <= 600 && int.Parse(fi.itemData.rating) > 77 && int.Parse(fi.startingBid) <=600)
+                    if (int.Parse(fi.currentBid) <= 600 && int.Parse(fi.itemData.rating) > 76 && int.Parse(fi.startingBid) <=600)
                     {
                         int currentBid = 0;                        
                         Requests.PlayerBid pb = new Requests.PlayerBid();
@@ -125,7 +125,7 @@ namespace AutoBidder
                             if (haveABid) { bidOrBuy = "Bid"; } else { bidOrBuy = "Buyout"; }
                             outputStr = bidOrBuy + " for item id : " + fi.itemData.id + " bid amount : " + currentBid + " quick sell price : " + fi.itemData.discardValue;
                             Console.WriteLine(bidOrBuy + " for item id : " + fi.itemData.id + " bid amount : " + currentBid + " quick sell price : " + fi.itemData.discardValue);
-                            Helpers.Sleeper.Sleep(2000, 8000);
+                            Helpers.Sleeper.Sleep(2000, 3000);
                         }
                     }
                 }
