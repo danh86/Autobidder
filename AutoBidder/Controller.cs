@@ -87,7 +87,6 @@ namespace AutoBidder
                 System.Net.HttpWebResponse wr1 = ps.MakeRequest();
                 String s1 = Helpers.WebResponseHelper.ReadResponse(wr1);
                 AutoBidder.Entities.BaseRequest v1 = JsonConvert.DeserializeObject<AutoBidder.Entities.BaseRequest>(s1);
-                Helpers.Sleeper.Sleep(2000, 3000);
 
                 bool haveBuyout = false;
 
@@ -113,11 +112,12 @@ namespace AutoBidder
                             pb.PlayerId = fi.tradeId;
                             System.Net.HttpWebResponse wr2 = pb.MakeRequest();
                             String s2 = Helpers.WebResponseHelper.ReadResponse(wr2);
-                            Console.WriteLine("Buyout for item id : " + fi.itemData.id + " bid amount : " + currentBid + " quick sell price : " + fi.itemData.discardValue);
-                            Helpers.Sleeper.Sleep(2000, 3000);
+                            Console.WriteLine("Buyout for item id : " + fi.itemData.id + " bid amount : " + currentBid + " quick sell price : " + fi.itemData.discardValue);                            
                         }    
                     }                
                 }
+
+                Helpers.Sleeper.Sleep(2000, 3000);
             }
         }
 
