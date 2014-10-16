@@ -41,19 +41,16 @@ namespace AutoBidder
 
         public void BidLowGolds()
         {
-            Console.WriteLine("starting test...");
+            Console.WriteLine("starting bid low golds...");
             for (int i = 0; i < 500; i++)
             {
                 AutoBidder.Requests.PlayerSearch ps = new AutoBidder.Requests.PlayerSearch();
-                ps.startNo = (i * 16) + (16 * 70);
+                ps.startNo = (i * 16);
                 ps.MaxPrice = 250;
 
                 //below should be classed up
-                Console.WriteLine("sending request...");
                 System.Net.HttpWebResponse wr1 = ps.MakeRequest();
                 String s1 = Helpers.WebResponseHelper.ReadResponse(wr1);
-                Console.WriteLine("response = " + s1);
-                Console.WriteLine("parsing response...");
                 AutoBidder.Entities.RootObject v1 = JsonConvert.DeserializeObject<AutoBidder.Entities.RootObject>(s1);
 
                 foreach (Entities.AuctionInfo ai in v1.auctionInfo)
@@ -68,21 +65,71 @@ namespace AutoBidder
                         System.Net.HttpWebResponse wr2 = pb.MakeRequest();
                         String s2 = Helpers.WebResponseHelper.ReadResponse(wr2);
 
-                        Console.WriteLine("result of bid = " + s2);
+                        Console.WriteLine("Winning bid - for item id : " + ai.itemData.id + " bid amount : 300 quick sell price : " + ai.itemData.discardValue);
                         Helpers.Sleeper.Sleep(2000, 8000);
                     }
                 }
 				Helpers.Sleeper.Sleep(2000, 8000);
             }
         }
+        
+
+        public void CommonBuyout()
+        {
+            Console.WriteLine("Starting common buyout search...");
+
+            for (int i = 0; i < 2500; i++)
+            {
+                int pageNo = 0;
+                AutoBidder.Requests.PlayerSearch ps = new AutoBidder.Requests.PlayerSearch();
+                ps.startNo = pageNo;
+                ps.MaxBuyout = 300;
+                System.Net.HttpWebResponse wr1 = ps.MakeRequest();
+                String s1 = Helpers.WebResponseHelper.ReadResponse(wr1);
+                AutoBidder.Entities.BaseRequest v1 = JsonConvert.DeserializeObject<AutoBidder.Entities.BaseRequest>(s1);
+                Helpers.Sleeper.Sleep(2000, 3000);
+
+                bool haveBuyout = false;
+
+                foreach (Entities.FutItem fi in v1.auctionInfo)
+                {
+                    haveBuyout = false;
+
+                    if (int.Parse(fi.itemData.rating) > 76)
+                    {                    
+                        //look at buyout
+                        Requests.PlayerBid pb = new Requests.PlayerBid();
+                        int currentBid = 0;   
+
+                        if (int.Parse(fi.buyNowPrice) <= 300 && int.Parse(fi.buyNowPrice) > 0)
+                        {
+                            pb.BidAmount = int.Parse(fi.buyNowPrice);
+                            currentBid = int.Parse(fi.buyNowPrice);
+                            haveBuyout = true;
+                        }
+
+                        if (haveBuyout)
+                        {
+                            pb.PlayerId = fi.tradeId;
+                            System.Net.HttpWebResponse wr2 = pb.MakeRequest();
+                            String s2 = Helpers.WebResponseHelper.ReadResponse(wr2);
+                            Console.WriteLine("Buyout for item id : " + fi.itemData.id + " bid amount : " + currentBid + " quick sell price : " + fi.itemData.discardValue);
+                            Helpers.Sleeper.Sleep(2000, 3000);
+                        }    
+                    }                
+                }
+            }
+        }
 
         public void PremBid(string outputStr)
         {
-            for (int i = 0; i < 500; i++)
+            for (int i = 250; i < 2500; i++)
             {
                 int pageNo = i * 16;
                 AutoBidder.Requests.PlayerSearch ps = new AutoBidder.Requests.PlayerSearch();
                 ps.startNo = pageNo;
+                ps.MaxPrice = 550;
+                ps.MaxBuyout = 600;
                 System.Net.HttpWebResponse wr1 = ps.MakeRequest();
                 String s1 = Helpers.WebResponseHelper.ReadResponse(wr1);
                 AutoBidder.Entities.BaseRequest v1 = JsonConvert.DeserializeObject<AutoBidder.Entities.BaseRequest>(s1);

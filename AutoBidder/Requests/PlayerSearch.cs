@@ -24,6 +24,11 @@ namespace AutoBidder.Requests
 			set	{ RequestUrl += "&macr=" + value.ToString();}
 		}
 
+        public int MaxBuyout
+        {
+            set { RequestUrl += "&maxb=" + value.ToString(); }
+        }
+
         public PlayerSearch()
         {
             RequestUrl = REQ_URL;
