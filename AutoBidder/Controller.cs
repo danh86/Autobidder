@@ -121,6 +121,68 @@ namespace AutoBidder
             }
         }
 
+        public void RareBuyout()
+        {
+            Console.WriteLine("Starting rare buyout search...");
+            bool overHour = false;
+
+            for (int i = 1; i < 2500; i++)
+            {
+                //if we went over an hour...reset page number
+                if (overHour)
+                {
+                    i = 1;
+                }
+
+                int hourMarkAttempt = 12 * 3000;
+                int pageNo = (i * 12) + hourMarkAttempt;
+
+                AutoBidder.Requests.PlayerSearch ps = new AutoBidder.Requests.PlayerSearch();
+                ps.startNo = pageNo;
+                ps.MaxBuyout = 300;
+                System.Net.HttpWebResponse wr1 = ps.MakeRequest();
+                String s1 = Helpers.WebResponseHelper.ReadResponse(wr1);
+                AutoBidder.Entities.BaseRequest v1 = JsonConvert.DeserializeObject<AutoBidder.Entities.BaseRequest>(s1);
+                
+                bool haveBuyout = false;
+
+                foreach (Entities.FutItem fi in v1.auctionInfo)
+                {
+                    haveBuyout = false;
+
+                    //see if expires is more than 1 hour (in seconds, so 3600)
+                    if (int.Parse(fi.expires) >= 3600)
+                    {
+                        overHour = true;
+                    }
+
+                    if (fi.itemData.rareflag == "1")
+                    {
+                        //look at buyout
+                        Requests.PlayerBid pb = new Requests.PlayerBid();
+                        int currentBid = 0;
+
+                        if (int.Parse(fi.buyNowPrice) <= 600 && int.Parse(fi.buyNowPrice) > 0)
+                        {
+                            pb.BidAmount = int.Parse(fi.buyNowPrice);
+                            currentBid = int.Parse(fi.buyNowPrice);
+                            haveBuyout = true;
+                        }
+
+                        if (haveBuyout)
+                        {
+                            pb.PlayerId = fi.tradeId;
+                            System.Net.HttpWebResponse wr2 = pb.MakeRequest();
+                            String s2 = Helpers.WebResponseHelper.ReadResponse(wr2);
+                            Console.WriteLine("Buyout for item id : " + fi.itemData.id + " bid amount : " + currentBid + " quick sell price : " + fi.itemData.discardValue);
+                        }
+                    }
+                }
+
+                Helpers.Sleeper.Sleep(2000, 3000);
+            }
+        }
+
         public void PremBid(string outputStr)
         {
             for (int i = 250; i < 2500; i++)
